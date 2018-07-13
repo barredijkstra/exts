@@ -26,9 +26,18 @@ import scala.util.{Failure, Success, Try}
 /**
   * Extended set of default spray formats.
   */
-trait ExtFormats extends DefaultJsonProtocol {
+trait ExtFormats {
+
+  import DefaultJsonProtocol._
+
   /**
-    * Flat format, used for unwrapping JSON values and directly creating instance values.
+    * Flat format, used for unwrapping a single JSON value and directly creating a single value instance.
+    *
+    * @example
+    * {{{
+    * case class Foo(value: Int)
+    * val json = """{}"""
+    * }}}
     *
     * @param construct The construction function.
     * @param jw        The writer for the underlying JSON data type.
@@ -47,7 +56,7 @@ trait ExtFormats extends DefaultJsonProtocol {
   /**
     * JsonFormat for java.net.URL
     */
-  implicit val urlJsonFormat: JsonFormat[URL] = new JsonFormat[URL] {
+  implicit val urlFormat: JsonFormat[URL] = new JsonFormat[URL] {
     override def read(json: JsValue): URL = json match {
       case JsString(url) => Try(new URL(url)).getOrElse(deserializationError("Invalid URL format"))
       case _ => deserializationError("URL should be string")

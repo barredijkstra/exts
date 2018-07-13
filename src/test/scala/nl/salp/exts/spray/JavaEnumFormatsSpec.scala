@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package nl.salp.exts.functional
+package nl.salp.exts.spray
 
-/**
-  * Wrapper class for adding piping functionality.
-  *
-  * @param value The object to wrap.
-  * @tparam T The type of the wrapper object.
-  */
-class Pipe[T](val value: T) extends AnyVal {
-  def |>[R](f: T => R): R = f(value)
-}
+import org.scalatest.{FlatSpec, Matchers}
 
-object Pipe {
-  def apply[T](value: T): Pipe[T] = new Pipe(value)
+class JavaEnumFormatsSpec extends FlatSpec with Matchers with EnumTests {
+
+  import JavaEnumFormats._
+
+  override type EnumType = JavaEnum
+
+  override implicit val enumTypeFormat = jsonJavaEnumFormat[JavaEnum]
+  override val enumFooValue = JavaEnum.FOO
+  override val enumBarValue = JavaEnum.BAR
 }

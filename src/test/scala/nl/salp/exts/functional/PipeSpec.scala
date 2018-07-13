@@ -16,16 +16,13 @@
 
 package nl.salp.exts.functional
 
-/**
-  * Wrapper class for adding piping functionality.
-  *
-  * @param value The object to wrap.
-  * @tparam T The type of the wrapper object.
-  */
-class Pipe[T](val value: T) extends AnyVal {
-  def |>[R](f: T => R): R = f(value)
-}
+import org.scalatest.{FlatSpec, Matchers}
 
-object Pipe {
-  def apply[T](value: T): Pipe[T] = new Pipe(value)
+class PipeSpec extends FlatSpec with Matchers {
+  def readValue(value: String): Int = value.toInt
+  def square(value: Int): Int = value * value
+
+  "Piping of methods" should "chain the method calls" in {
+    "8" |> readValue |> square shouldEqual 64
+  }
 }

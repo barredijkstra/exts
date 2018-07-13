@@ -14,18 +14,9 @@
  * limitations under the License.
  */
 
-package nl.salp.exts.functional
+package nl.salp.exts.spray;
 
-/**
-  * Wrapper class for adding piping functionality.
-  *
-  * @param value The object to wrap.
-  * @tparam T The type of the wrapper object.
-  */
-class Pipe[T](val value: T) extends AnyVal {
-  def |>[R](f: T => R): R = f(value)
-}
-
-object Pipe {
-  def apply[T](value: T): Pipe[T] = new Pipe(value)
+public enum JavaEnum {
+    FOO,
+    BAR;
 }

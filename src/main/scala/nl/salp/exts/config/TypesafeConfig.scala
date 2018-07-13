@@ -48,7 +48,7 @@ trait TypesafeConfig {
     * @tparam T The config value type.
     * @return The option value of the option.
     */
-  protected def asOption[T](f: Config => T): Option[T] = Try(f(config)) match {
+  protected def opt[T](f: Config => T): Option[T] = Try(f(config)) match {
     case Success(value) => Some(value)
     case Failure(_: ConfigException.Missing) => None
     case Failure(ex) => throw ex

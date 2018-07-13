@@ -20,19 +20,18 @@ package object functional {
   /**
     * Add piped method to any type.
     *
-    * @example {{{
-    *           import nl.salp.exts.functional._
+    * @example
+    * {{{
+    *   import nl.salp.exts.functional._
     *
-    *           val readValue: String => Int = value => value.toInt
-    *           val squared: Int => Int = value => value * value
+    *   val readValue: String => Int = value => value.toInt
+    *   val squared: Int => Int = value => value * value
     *
-    *           val result = "42" :> readValue :> squared
+    *   val result = "42" |> readValue |> squared
     * }}}
-    * @param value
-    * @tparam T
-    * @return
+    * @param value The object to extend.
+    * @tparam T The type of the wrapped object.
+    * @return the extended object.
     */
   implicit def toPipe[T](value: T): Pipe[T] = Pipe(value)
-
-  val x: String => Int = value => value.toInt
 }

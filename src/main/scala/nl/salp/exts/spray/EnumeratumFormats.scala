@@ -17,30 +17,33 @@
 package nl.salp.exts.spray
 
 import enumeratum.{Enum, EnumEntry}
-import spray.json._
+import spray.json.{JsString, JsValue, JsonFormat, deserializationError}
 
 /**
   * Spray formats for enumeratum enums.
   */
-trait EnumFormats extends DefaultJsonProtocol {
+trait EnumeratumFormats {
+
   /**
-    * Create a new JsonFormat for an enumeratum enum, using case-insensitve translation from JSON string to enum value name.
+    * Create a new JsonFormat for an enumeratum enum, mapping between the enum value and the name.
     *
-    * @param enumCompanion The companion object.
-    * @tparam T The enum.
+    * @param enumCompanion The enum companion object.
+    * @tparam E The type of the enum entry.
     * @return The format.
     */
-  def jsonEnumFormat[T <: EnumEntry](enumCompanion: Enum[T]): JsonFormat[T] =
-    new JsonFormat[T] {
-      override def read(json: JsValue): T = json match {
+  def jsonEnumeratumFormat[E <: EnumEntry](enumCompanion: Enum[E]): JsonFormat[E] =
+    new JsonFormat[E] {
+      override def read(json: JsValue): E = json match {
         case JsString(name) =>
           enumCompanion
-            .withNameInsensitiveOption(name)
+            .withNameOption(name)
             .getOrElse(deserializationError(s"$name should be one of (${enumCompanion.values.map(_.entryName).mkString(", ")})"))
         case _ =>
           deserializationError(s"${json.toString()} should be a string of value (${enumCompanion.values.map(_.entryName).mkString(", ")})")
       }
 
-      override def write(obj: T): JsValue = JsString(obj.entryName)
+      override def write(obj: E): JsValue = JsString(obj.entryName)
     }
 }
+
+object EnumeratumFormats extends EnumeratumFormats

@@ -11,7 +11,7 @@ resolvers += Resolver.mavenLocal
 autoScalaLibrary := false
 libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.3.+",
-  "io.spray" %%  "spray-json" % "1.3.+",
+  "io.spray" %% "spray-json" % "1.3.+",
   "com.beachape" %% "enumeratum" % "1.5.+"
 ) map (_ % Provided)
 
@@ -73,24 +73,21 @@ pomExtra := {
 }
 
 releaseCrossBuild := true
+
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
+
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
   runClean,
   runTest,
   setReleaseVersion,
-  /*
-    commitReleaseVersion,
-    tagRelease,
-    releaseStepCommandAndRemaining("+ publish"),
-    releaseStepTask(bintrayRelease),
-  */
+  commitReleaseVersion,
+  tagRelease,
+  releaseStepCommandAndRemaining("+ publish"),
+  releaseStepTask(bintrayRelease),
   publishArtifacts,
-  setNextVersion
-  /*
-    setNextVersion,
-    commitNextVersion,
-    pushChanges
-  */
+  setNextVersion,
+  commitNextVersion,
+  pushChanges
 )

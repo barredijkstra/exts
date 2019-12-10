@@ -1,5 +1,6 @@
 .cache
 .history
+.bloop/
 target/
 dist/
 lib_managed/

@@ -17,11 +17,12 @@
 package nl.salp.exts.config
 
 import com.typesafe.config.{Config, ConfigException, ConfigFactory}
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.concurrent.duration.{FiniteDuration, _}
 
-class TypesafeConfigSpec extends FlatSpec with Matchers {
+class TypesafeConfigSpec extends AnyFlatSpec with Matchers {
 
   object TestConfig extends TypesafeConfig {
     val durationKey = "test.duration"

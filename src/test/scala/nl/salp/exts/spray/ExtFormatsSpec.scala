@@ -19,9 +19,10 @@ package nl.salp.exts.spray
 import java.net.URL
 import java.util.UUID
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class ExtFormatsSpec extends FlatSpec with Matchers {
+class ExtFormatsSpec extends AnyFlatSpec with Matchers {
 
   import spray.json._
   import DefaultJsonProtocol._
@@ -33,12 +34,17 @@ class ExtFormatsSpec extends FlatSpec with Matchers {
 
     case class Foo(id: Int, bar: Bar)
 
-    implicit val barFormat = jsonFlatFormat(Bar.apply)
-    implicit val fooFormat = jsonFormat2(Foo)
+    implicit val barFormat: JsonFormat[Bar] = jsonFlatFormat(Bar.apply)
+    implicit val fooFormat: JsonFormat[Foo] = jsonFormat2(Foo.apply)
   }
 
   "jsonFlatFormat" should "flatten a property when marshalled" in new FlatFormatFixture {
-    Foo(42, Bar("foobar")).toJson.compactPrint shouldEqual """{"id":42,"bar":"foobar"}"""
+    val idValue: Int = 42
+    val barValue: String = "foobar"
+
+    val foo: JsObject = Foo(id = idValue, bar = Bar(barValue)).toJson.asJsObject
+    foo.fields.size shouldEqual 2
+    foo.getFields("id", "bar") shouldEqual scala.collection.immutable.Seq[JsValue](JsNumber(idValue), JsString(barValue))
   }
   it should "unpack a value when unmarshalling" in new FlatFormatFixture {
     """{"id":42,"bar":"foobar"}""".parseJson.convertTo[Foo] shouldEqual Foo(42, Bar("foobar"))
@@ -48,13 +54,16 @@ class ExtFormatsSpec extends FlatSpec with Matchers {
   }
 
   trait UuidFixture {
-    case class Foo(value: java.util.UUID)
-    implicit val fooFormat = jsonFormat1(Foo)
 
-    val validJson = """{"value":"00000000-0000-002a-0000-00000000002a"}"""
-    val invalidJson = """{"value":"00000000-000b-002a-0000-00000000002a"}"""
-    val obj = Foo(new UUID(42L, 42L))
+    case class Foo(value: java.util.UUID)
+
+    implicit val fooFormat: JsonFormat[Foo] = jsonFormat1(Foo)
+
+    val validJson: String = """{"value":"00000000-0000-002a-0000-00000000002a"}"""
+    val invalidJson: String = """{"value":"00000000-000b-002a-0000-00000000002a"}"""
+    val obj: Foo = Foo(new UUID(42L, 42L))
   }
+
   "A java.util.UUID" should "be marshalled as a JSON String" in new UuidFixture {
     obj.toJson.compactPrint shouldEqual validJson
     Foo(new UUID(43L, 42L)).toJson.compactPrint shouldNot equal(validJson)
@@ -71,13 +80,16 @@ class ExtFormatsSpec extends FlatSpec with Matchers {
   }
 
   trait UrlFixture {
-    case class Foo(value: URL)
-    implicit val fooFormat = jsonFormat1(Foo)
 
-    val obj = Foo(new URL("http://www.test.com/"))
-    val validJson = """{"value":"http://www.test.com/"}"""
-    val invalidJson = """{"value":"https://www.other.net/"}"""
+    case class Foo(value: URL)
+
+    implicit val fooFormat: RootJsonFormat[Foo] = jsonFormat1(Foo)
+
+    val obj: Foo = Foo(new URL("http://www.test.com/"))
+    val validJson: String = """{"value":"http://www.test.com/"}"""
+    val invalidJson: String = """{"value":"https://www.other.net/"}"""
   }
+
   "A java.net.URL" should "be marshalled as a JSON String" in new UrlFixture {
     obj.toJson.compactPrint shouldEqual validJson
     Foo(new URL("https://www.other.net/")).toJson.compactPrint shouldNot equal(validJson)
@@ -94,7 +106,7 @@ class ExtFormatsSpec extends FlatSpec with Matchers {
   }
 
   trait JsonValueFixture {
-    val json =
+    val json: String =
       """{
         |  "stringValue": "foo",
         |  "numValue": 42,
@@ -106,7 +118,7 @@ class ExtFormatsSpec extends FlatSpec with Matchers {
         |}
         |""".stripMargin
 
-    val jsObject = json.parseJson.asJsObject
+    val jsObject: JsObject = json.parseJson.asJsObject
   }
 
   "An extended JsObject" should "provide direct reading of values" in new JsonValueFixture {

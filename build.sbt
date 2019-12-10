@@ -4,19 +4,19 @@ name := "exts"
 organization := "nl.salp.exts"
 headerLicense := Some(HeaderLicense.ALv2("2018", "Barre Dijkstra"))
 
-scalaVersion := "2.12.6"
-crossScalaVersions := Seq("2.12.6", "2.11.12")
+scalaVersion := "2.13.1"
+crossScalaVersions := Seq("2.13.1", "2.12.10")
 resolvers += Resolver.mavenLocal
 
 autoScalaLibrary := false
 libraryDependencies ++= Seq(
-  "com.typesafe" % "config" % "1.3.+",
+  "com.typesafe" % "config" % "1.4.+",
   "io.spray" %% "spray-json" % "1.3.+",
   "com.beachape" %% "enumeratum" % "1.5.+"
 ) map (_ % Provided)
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.0.+"
+  "org.scalatest" %% "scalatest" % "3.1.+"
 ) map (_ % Test)
 
 scalacOptions in Compile ++= Seq(
@@ -27,18 +27,10 @@ scalacOptions in Compile ++= Seq(
   "-feature",
   "-language:implicitConversions",
   "-language:higherKinds",
+  "-language:postfixOps",
   "-language:existentials",
-  "-Xlint",
-  "-Ywarn-dead-code",
-  "-Ywarn-infer-any",
-  "-Ywarn-inaccessible"
-) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
-  case Some((2, majorVersion)) if majorVersion >= 12 =>
-    Seq("-target:jvm-1.8")
-  case _ =>
-    Seq("-target:jvm-1.7")
-})
-
+  "-Xlint"
+)
 
 publishMavenStyle := true
 publishArtifact in Test := false

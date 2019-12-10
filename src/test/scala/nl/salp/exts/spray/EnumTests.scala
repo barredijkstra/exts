@@ -16,12 +16,13 @@
 
 package nl.salp.exts.spray
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 /**
   * Common test cases and logic for spray marshalling/unmarshalling of enumerations.
   */
-private[spray] trait EnumTests { self: FlatSpec with Matchers =>
+private[spray] trait EnumTests { self: AnyFlatSpec with Matchers =>
 
   import spray.json._
   import DefaultJsonProtocol._

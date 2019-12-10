@@ -14,27 +14,24 @@
  * limitations under the License.
  */
 
-package nl.salp.exts
+package nl.salp.exts.config
 
-import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.should.Matchers
+import java.time.{Duration => JDuration}
+import java.util.concurrent.TimeUnit
 
-class TagSpec extends AnyFlatSpec with Matchers {
+import scala.concurrent.duration.FiniteDuration
 
-  import tag._
+private[config] object JavaConverters {
 
-  sealed trait LeftValueTag
+  import scala.collection.JavaConverters._
 
-  sealed trait RightValueTag
+  def toScalaFiniteDuration(duration: JDuration): FiniteDuration =
+    FiniteDuration(duration.toNanos, TimeUnit.NANOSECONDS)
 
-  type LeftValue = Long @@ LeftValueTag
-  type RightValue = Long @@ RightValueTag
+  def toScalaSeq[E](list: java.util.List[E]): Seq[E] =
+    list.asScala.toSeq
 
-  "Tagged values" should "behave as normal values" in {
-    val left: LeftValue = tag[LeftValueTag][Long](42L)
-    val right: RightValue = tag[RightValueTag][Long](8L)
-    left shouldEqual 42L
-    right shouldEqual 8L
-    (left + right) shouldEqual 50L
-  }
+
+  def toScalaSet[E](set: java.util.Set[E]): Set[E] =
+    set.asScala.toSet
 }

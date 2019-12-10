@@ -22,7 +22,7 @@ package nl.salp.exts.functional
   * @param value The object to wrap.
   * @tparam T The type of the wrapper object.
   */
-class Pipe[T](val value: T) extends AnyVal {
+class Pipe[T](private val value: T) extends AnyVal {
   def |>[R](f: T => R): R = f(value)
 }
 

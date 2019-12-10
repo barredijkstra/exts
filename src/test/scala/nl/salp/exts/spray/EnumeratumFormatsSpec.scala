@@ -17,11 +17,12 @@
 package nl.salp.exts.spray
 
 import enumeratum.{Enum, EnumEntry}
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.collection.immutable
 
-class EnumeratumFormatsSpec extends FlatSpec with Matchers with EnumTests {
+class EnumeratumFormatsSpec extends AnyFlatSpec with Matchers with EnumTests {
 
   sealed trait EnumeratumEnum extends EnumEntry
 

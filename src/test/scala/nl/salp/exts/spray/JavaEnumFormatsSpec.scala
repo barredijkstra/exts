@@ -16,9 +16,10 @@
 
 package nl.salp.exts.spray
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class JavaEnumFormatsSpec extends FlatSpec with Matchers with EnumTests {
+class JavaEnumFormatsSpec extends AnyFlatSpec with Matchers with EnumTests {
 
   import JavaEnumFormats._
 

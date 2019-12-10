@@ -16,9 +16,10 @@
 
 package nl.salp.exts.spray
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class ScalaEnumFormatsSpec extends FlatSpec with Matchers with EnumTests {
+class ScalaEnumFormatsSpec extends AnyFlatSpec with Matchers with EnumTests {
 
   object ScalaEnum extends Enumeration {
     type ScalaEnum = Value

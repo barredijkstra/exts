@@ -16,9 +16,10 @@
 
 package nl.salp.exts.functional
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class PipeSpec extends FlatSpec with Matchers {
+class PipeSpec extends AnyFlatSpec with Matchers {
   def readValue(value: String): Int = value.toInt
   def square(value: Int): Int = value * value
 

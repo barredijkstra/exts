@@ -27,6 +27,20 @@ Replace `x.y.z` with the [latest library version](https://bintray.com/barredijks
 
 The project is cross-compiled against both Scala 2.11 (Java 7) and 2.12 (Java 8)
 
+# Versions
+## 0.3.0
+- Removed Scala 2.11 support
+- Added Scala 2.13 support and added 2.12/2.13 specific code branches for 2.13 deprecated code
+- Bumped dependency versions
+    - `"com.typesafe" % "config" % "1.4.+" % Provided`
+    - `"io.spray" %% "spray-json" % "1.3.+" % Provided`
+    - `"com.beachape" %% "enumeratum" % "1.5.+" % Provided`
+- Upgraded to scalatest 3.1.x
+- Cleaned up build
+
+## 0.2.0
+- ...
+
 ## Credits
 - Some spray formats are based on [kebs](https://github.com/theiterators/kebs/)  
 - The `tags` comes from miles sabin's awesome [shapeless](https://github.com/milessabin/shapeless) library

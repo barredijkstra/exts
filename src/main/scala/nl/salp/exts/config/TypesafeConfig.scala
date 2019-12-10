@@ -16,12 +16,10 @@
 
 package nl.salp.exts.config
 
-import java.util.concurrent.TimeUnit
 import java.{time => jtime}
 
 import com.typesafe.config.{Config, ConfigException}
 
-import scala.collection.JavaConverters._
 import scala.concurrent.duration.FiniteDuration
 import scala.util.{Failure, Success, Try}
 
@@ -39,7 +37,7 @@ trait TypesafeConfig {
     * @return The Java Duration as Scala FiniteDuration.
     */
   implicit protected def duration2FiniteDuration(duration: jtime.Duration): FiniteDuration =
-    FiniteDuration(duration.toNanos, TimeUnit.NANOSECONDS)
+    JavaConverters.toScalaFiniteDuration(duration)
 
   /**
     * Wraps reading a config value as an option, returning a None when it was not found.
@@ -69,8 +67,8 @@ trait TypesafeConfig {
     * @return The map.
     */
   protected def getMap(path: String): Map[String, AnyRef] = (for {
-    obj <- config.getObjectList(path).asScala
-    entry <- obj.entrySet().asScala
+    obj <- JavaConverters.toScalaSeq(config.getObjectList(path))
+    entry <- JavaConverters.toScalaSet(obj.entrySet())
   } yield (entry.getKey, entry.getValue.unwrapped())).toMap
 }
 

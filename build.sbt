@@ -4,8 +4,8 @@ name := "exts"
 organization := "nl.salp.exts"
 headerLicense := Some(HeaderLicense.ALv2("2018", "Barre Dijkstra"))
 
-scalaVersion := "2.13.1"
-crossScalaVersions := Seq("2.13.1", "2.12.10")
+scalaVersion := "2.13.9"
+crossScalaVersions := Seq("2.13.10", "2.12.17")
 resolvers += Resolver.mavenLocal
 
 autoScalaLibrary := false
